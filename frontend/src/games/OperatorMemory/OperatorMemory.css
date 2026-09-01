@@ -1,0 +1,236 @@
+/* Operator Memory — self-contained styles.
+   Kept independent of the app's global stylesheet so this game is
+   safe to drop in without touching shared CSS. Large text, large
+   buttons, strong contrast, minimal motion — designed for elderly
+   and dementia-friendly use. */
+
+.op-memory-shell {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  padding: 24px;
+  font-size: 18px;
+  color: #1f2933;
+}
+
+@media (max-width: 800px) {
+  .op-memory-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+.op-memory-panel {
+  background: #ffffff;
+  border: 2px solid #d8dee4;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.op-memory-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 14px;
+  color: #5b6b79;
+  margin: 0 0 4px;
+}
+
+.op-memory-panel h1 {
+  font-size: 30px;
+  margin: 0 0 20px;
+}
+
+.op-memory-difficulty {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.op-memory-difficulty-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #cbd5e0;
+  background: #f7f9fb;
+  cursor: pointer;
+}
+
+.op-memory-difficulty-button span {
+  color: #5b6b79;
+  font-size: 15px;
+}
+
+.op-memory-difficulty-button.is-selected {
+  border-color: #2f6fed;
+  background: #eaf1ff;
+  font-weight: 700;
+}
+
+.op-memory-instructions h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.op-memory-instructions ul {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.op-memory-board {
+  background: #ffffff;
+  border: 2px solid #d8dee4;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+}
+
+.op-memory-stage-card {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+}
+
+.op-memory-stage-card h2 {
+  font-size: 26px;
+  margin-bottom: 24px;
+}
+
+.op-memory-expression {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.op-memory-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.op-memory-number {
+  min-width: 56px;
+  display: inline-block;
+}
+
+.op-memory-operator {
+  color: #2f6fed;
+  min-width: 34px;
+  display: inline-block;
+}
+
+.op-memory-equals {
+  color: #5b6b79;
+}
+
+.op-memory-hint-text {
+  font-size: 18px;
+  color: #5b6b79;
+  margin-bottom: 28px;
+}
+
+.op-memory-start-button,
+.op-memory-submit-button {
+  font-size: 22px;
+  font-weight: 700;
+  padding: 18px 40px;
+  border-radius: 14px;
+  border: none;
+  background: #2f6fed;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.op-memory-start-button:hover,
+.op-memory-submit-button:hover {
+  background: #2558c3;
+}
+
+.op-memory-countdown {
+  font-size: 96px;
+  font-weight: 800;
+  color: #2f6fed;
+  margin: 40px 0;
+}
+
+.op-memory-board-header {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+.op-memory-board-label {
+  margin: 0 0 4px;
+  color: #5b6b79;
+}
+
+.op-memory-board-header strong {
+  font-size: 22px;
+}
+
+.op-memory-feedback {
+  font-size: 20px;
+  color: #b45309;
+  background: #fff7e6;
+  border: 2px solid #f4d9a0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.op-memory-answer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.op-memory-answer-label {
+  font-size: 18px;
+  color: #5b6b79;
+}
+
+.op-memory-answer-input {
+  width: 220px;
+  font-size: 36px;
+  text-align: center;
+  padding: 16px;
+  border-radius: 14px;
+  border: 2px solid #cbd5e0;
+}
+
+.op-memory-answer-input:focus {
+  outline: 3px solid #2f6fed;
+  border-color: #2f6fed;
+}
+
+.op-memory-result-stats {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.op-memory-result-stats strong {
+  display: block;
+  font-size: 26px;
+}
+
+.op-memory-result-card p {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
