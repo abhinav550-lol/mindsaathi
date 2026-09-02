@@ -1,34 +1,37 @@
-import { useState } from 'react'
-import './App.css'
-import { gameRegistry } from './games/gameRegistry'
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext';
+import { AIAdaptiveProvider } from './context/AIAdaptiveContext';
+import Navbar from './components/Navbar';
 
-const DEFAULT_GAME_ID = 'card-matching'
+import LandingPage from './pages/LandingPage';
+import PatientDashboard from './pages/PatientDashboard';
+import GamesPage from './pages/GamesPage';
+import ProgressPage from './pages/ProgressPage';
+import RemindersPage from './pages/RemindersPage';
+import CaregiverDashboard from './pages/CaregiverDashboard';
 
-function App() {
-  const [activeGameId, setActiveGameId] = useState(DEFAULT_GAME_ID)
-  const activeGame = gameRegistry[activeGameId]
-  const ActiveGameComponent = activeGame?.component
-
+export default function App() {
   return (
-    <main className="app-shell">
-      <div className="app-content">
-        <nav className="game-switcher" aria-label="Choose a game">
-          {Object.entries(gameRegistry).map(([gameId, game]) => (
-            <button
-              key={gameId}
-              type="button"
-              className={`game-switcher-button ${gameId === activeGameId ? 'is-active' : ''}`}
-              onClick={() => setActiveGameId(gameId)}
-            >
-              {game.name}
-            </button>
-          ))}
-        </nav>
-
-        {ActiveGameComponent ? <ActiveGameComponent /> : null}
-      </div>
-    </main>
-  )
+    <BrowserRouter>
+      <LanguageProvider>
+        <AIAdaptiveProvider>
+          <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', color: 'var(--foreground)', fontFamily: "'Inter', sans-serif" }}>
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/patient" element={<PatientDashboard />} />
+                <Route path="/games" element={<GamesPage />} />
+                <Route path="/progress" element={<ProgressPage />} />
+                <Route path="/reminders" element={<RemindersPage />} />
+                <Route path="/caregiver" element={<CaregiverDashboard />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
+          </div>
+        </AIAdaptiveProvider>
+      </LanguageProvider>
+    </BrowserRouter>
+  );
 }
-
-export default App

@@ -2,16 +2,17 @@ import { useEffect, useMemo, useState } from 'react'
 import { levels } from './levels'
 import { calculateResult, createDeck } from './gameLogic'
 import Card from './Card'
+import './CardMatching.css'
 
 const DEFAULT_LEVEL = 1
 
-function CardMatching() {
-  const [difficulty, setDifficulty] = useState(DEFAULT_LEVEL)
-  const [cards, setCards] = useState(() => createDeck(DEFAULT_LEVEL))
+function CardMatching({ initialLevel = DEFAULT_LEVEL, onGameComplete }) {
+  const [difficulty, setDifficulty] = useState(initialLevel)
+  const [cards, setCards] = useState(() => createDeck(initialLevel))
   const [selectedIds, setSelectedIds] = useState([])
   const [matchedPairs, setMatchedPairs] = useState(0)
   const [status, setStatus] = useState('ready')
-  const [timeLeft, setTimeLeft] = useState(levels[DEFAULT_LEVEL].timeLimit)
+  const [timeLeft, setTimeLeft] = useState(levels[initialLevel]?.timeLimit || 45)
   const [result, setResult] = useState(null)
 
   const levelConfig = useMemo(() => levels[difficulty], [difficulty])
@@ -29,6 +30,10 @@ function CardMatching() {
   }
 
   useEffect(() => {
+    beginGame(initialLevel)
+  }, [initialLevel])
+
+  useEffect(() => {
     if (status !== 'playing') return undefined
 
     const timerId = window.setInterval(() => {
@@ -36,17 +41,24 @@ function CardMatching() {
         if (currentTime <= 1) {
           window.clearInterval(timerId)
 
-          setResult(
-            calculateResult({
-              difficulty,
-              matches: matchedPairs,
-              totalPairs: levelConfig.pairs,
-              completionTime: levelConfig.timeLimit,
-              completed: false,
-            }),
-          )
-
+          const timeoutRes = calculateResult({
+            difficulty,
+            matches: matchedPairs,
+            totalPairs: levelConfig.pairs,
+            completionTime: levelConfig.timeLimit,
+            completed: false,
+          })
+          setResult(timeoutRes)
           setStatus('completed')
+          if (onGameComplete) {
+            onGameComplete({
+              score: timeoutRes.score,
+              completed: false,
+              accuracy: Math.round((matchedPairs / levelConfig.pairs) * 100),
+              completionTime: levelConfig.timeLimit,
+              level: difficulty
+            })
+          }
           return 0
         }
 
@@ -55,7 +67,7 @@ function CardMatching() {
     }, 1000)
 
     return () => window.clearInterval(timerId)
-  }, [difficulty, levelConfig, matchedPairs, status])
+  }, [difficulty, levelConfig, matchedPairs, status, onGameComplete])
 
   useEffect(() => {
     if (selectedIds.length !== 2 || status !== 'playing') return undefined
@@ -97,7 +109,16 @@ function CardMatching() {
 
     setResult(finalResult)
     setStatus('completed')
-  }, [difficulty, levelConfig, matchedPairs, status, timeLeft])
+    if (onGameComplete) {
+      onGameComplete({
+        score: finalResult.score,
+        completed: true,
+        accuracy: Math.round((matchedPairs / levelConfig.pairs) * 100),
+        completionTime: levelConfig.timeLimit - timeLeft,
+        level: difficulty
+      })
+    }
+  }, [difficulty, levelConfig, matchedPairs, status, timeLeft, onGameComplete])
 
   const handleCardClick = (cardId) => {
     if (status !== 'playing') return
@@ -163,7 +184,15 @@ function CardMatching() {
         {status !== 'playing' && status !== 'completed' ? (
           <div className="waiting-state">
             <h2>Ready to begin</h2>
-            <p>Choose a level and press start to begin the matching round.</p>
+            <p>Choose a level or press start below to begin the matching round.</p>
+            <button
+              type="button"
+              className="start-button"
+              style={{ marginTop: '16px', maxWidth: '240px', margin: '16px auto 0' }}
+              onClick={() => beginGame(difficulty)}
+            >
+              Start Game Now ▶
+            </button>
           </div>
         ) : (
           <div

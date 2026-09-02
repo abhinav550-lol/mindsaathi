@@ -8,10 +8,10 @@ const DEFAULT_LEVEL = 1
 const COUNTDOWN_STEP_MS = 800
 const HINT_DISPLAY_MS = 1800
 
-function SequenceRecall() {
-  const [difficulty, setDifficulty] = useState(DEFAULT_LEVEL)
+function SequenceRecall({ initialLevel = DEFAULT_LEVEL, onGameComplete }) {
+  const [difficulty, setDifficulty] = useState(initialLevel)
   const [round, setRound] = useState(1)
-  const [sequence, setSequence] = useState(() => createSequence(DEFAULT_LEVEL, 1))
+  const [sequence, setSequence] = useState(() => createSequence(initialLevel, 1))
   const [selectedNumbers, setSelectedNumbers] = useState([])
   const [stage, setStage] = useState('ready')
   const [countdown, setCountdown] = useState(3)
@@ -22,7 +22,7 @@ function SequenceRecall() {
   const [incorrectAnswers, setIncorrectAnswers] = useState(0)
   const [hintsUsed, setHintsUsed] = useState(0)
   const [sequenceReplays, setSequenceReplays] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(levels[DEFAULT_LEVEL].timeLimit)
+  const [timeLeft, setTimeLeft] = useState((levels[initialLevel] ?? levels[DEFAULT_LEVEL]).timeLimit)
   const [result, setResult] = useState(null)
   const [feedback, setFeedback] = useState('')
   const [startedAt, setStartedAt] = useState(null)
@@ -54,6 +54,15 @@ function SequenceRecall() {
     setStage('completed')
     setHighlightedNumber(null)
     setHintIndexes([])
+    if (onGameComplete) {
+      onGameComplete({
+        score: finalResult.score,
+        completed: status === 'WIN',
+        accuracy: status === 'WIN' ? 100 : Math.round((completedRounds / levelConfig.rounds) * 100),
+        completionTime,
+        level: difficulty
+      })
+    }
   }
 
   const prepareRound = (nextRound, level = difficulty) => {

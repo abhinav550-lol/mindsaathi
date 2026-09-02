@@ -26,15 +26,15 @@ function buildMetadata(expression, revealedIndexes) {
   }
 }
 
-function OperatorMemory() {
-  const [difficulty, setDifficulty] = useState(DEFAULT_LEVEL)
-  const [expression, setExpression] = useState(() => generateExpression(levels[DEFAULT_LEVEL]))
+function OperatorMemory({ initialLevel = DEFAULT_LEVEL, onGameComplete }) {
+  const [difficulty, setDifficulty] = useState(initialLevel)
+  const [expression, setExpression] = useState(() => generateExpression(levels[initialLevel] ?? levels[DEFAULT_LEVEL]))
   const [stage, setStage] = useState('ready')
   const [revealedIndexes, setRevealedIndexes] = useState([])
   const [incorrectAnswers, setIncorrectAnswers] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const [feedback, setFeedback] = useState('')
-  const [timeLeft, setTimeLeft] = useState(levels[DEFAULT_LEVEL].timeLimit)
+  const [timeLeft, setTimeLeft] = useState((levels[initialLevel] ?? levels[DEFAULT_LEVEL]).timeLimit)
   const [result, setResult] = useState(null)
   const [startedAt, setStartedAt] = useState(null)
 
@@ -113,6 +113,18 @@ function OperatorMemory() {
 
     return () => window.clearInterval(timerId)
   }, [stage, difficulty, levelConfig, incorrectAnswers, revealedIndexes, startedAt, expression])
+
+  useEffect(() => {
+    if (stage === 'completed' && result && onGameComplete) {
+      onGameComplete({
+        score: result.score,
+        completed: result.status === 'CORRECT',
+        accuracy: result.status === 'CORRECT' ? 100 : 0,
+        completionTime: result.completionTime,
+        level: difficulty
+      })
+    }
+  }, [stage, result, difficulty, onGameComplete])
 
   const handleSubmit = (event) => {
     event.preventDefault()
