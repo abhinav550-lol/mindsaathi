@@ -1,97 +1,128 @@
-# MindSaathi Tech Stack
+# **MindSaathi – Complete Tech Stack**
 
-## Frontend
+## **1. Frontend**
 
-* **React.js** — Main frontend framework for the web application.
-* **Tailwind CSS** — Utility-first styling.
-* **shadcn/ui** — Reusable and accessible UI components.
+| Technology     | Usage                                      |
+| -------------- | ------------------------------------------ |
+| React.js       | Patient, family and healthcare interfaces  |
+| TypeScript     | Type safety and maintainable frontend code |
+| Tailwind CSS   | Responsive, elderly-friendly UI            |
+| Web Speech API | Voice input and basic speech interaction   |
+| PWA (later)    | Offline application support                |
 
-## Backend
+## **2. Backend**
 
-* **Node.js + Express.js** — REST API and backend business logic.
-* Handles authentication, games, memory bank, reminiscence companion, reminders, alerts, and role-based APIs.
+| Technology  | Usage                                   |
+| ----------- | --------------------------------------- |
+| Python      | AI, ML and backend development          |
+| FastAPI     | REST APIs and AI/ML service integration |
+| Pydantic    | Request validation and data schemas     |
+| JWT / OAuth | Authentication and role-based access    |
+| Celery      | Background tasks and scheduled jobs     |
 
-## Database
+## **3. Agentic AI**
 
-* **MongoDB Atlas** — Primary database for:
+| Technology            | Usage                                              |
+| --------------------- | -------------------------------------------------- |
+| LangChain             | LLM integration, prompts, retrievers and tools     |
+| LangGraph             | Stateful AI agents and conversational workflows    |
+| LLM (Gemini / Groq)   | Memory conversations and reminiscence interactions |
+| Sentence Transformers | Semantic embeddings for memory retrieval           |
+| ChromaDB / FAISS      | Vector storage and similarity search               |
+| Whisper / Sarvam      | Speech-to-text                                     |
+| Sarvam / Indic TTS    | Multilingual text-to-speech                        |
 
-  * Users
-  * Roles
-  * Patient data
-  * Game sessions
-  * Memories
-  * Reminders
-  * Notifications
-  * Reminiscence photo metadata
+**Two primary agents:**
 
-## Authentication & Authorization
+- Personal Memory Agent – Retrieves and answers questions using family-provided information.
+- Reminiscence Agent – Conducts photograph-based conversations and provides contextual hints.
 
-* **bcrypt** — Password hashing.
-* **JWT** — Authentication and protected API access.
-* Role information will be used to differentiate:
+## **4. Machine Learning**
 
-  * Patient
-  * Family
-  * Healthcare Provider
+| Technology               | Usage                                             |
+| ------------------------ | ------------------------------------------------- |
+| Python                   | ML implementation                                 |
+| Scikit-learn             | Model training and evaluation                     |
+| Decision Tree Classifier | Predict increase, decrease or maintain difficulty |
+| Pandas                   | Interaction data processing                       |
+| NumPy                    | Numerical operations                              |
+| Joblib                   | Saving and loading trained models                 |
 
-## AI & RAG
+**ML input:** Accuracy, completion time, hints used, current difficulty and historical performance.
 
-* **MiniLM** — Generates embeddings for personal memories.
-* **MongoDB Atlas Vector Search** — Performs semantic similarity search for the Personal Memory Bank.
-* **LLM API** — Generates grounded responses using retrieved personal memory context.
+**ML output:** Recommended next difficulty level.
 
-## Voice
+## **5. Database and Storage**
 
-* **Sarvam AI** — Used for multilingual voice interaction.
-* Handles:
+| Technology | Usage                                                   |
+| ---------- | ------------------------------------------------------- |
+| PostgreSQL | Patients, medications, game history, family information |
+| Redis      | Caching, session state and background task coordination |
+| ChromaDB   | Semantic search over personal memories                  |
+| AWS S3     | Family photographs and uploaded media                   |
 
-  * Speech-to-Text for patient queries
-  * Text-to-Speech for AI responses
-  * Voice interaction for the Personal Memory Bank
-  * Voice interaction for the AI Reminiscence Companion
+## **6. Notifications and Background Processing**
 
-## Caching & Temporary Data
+| Technology               | Usage                                        |
+| ------------------------ | -------------------------------------------- |
+| Celery                   | Background processing                        |
+| Redis                    | Celery message broker                        |
+| Firebase Cloud Messaging | Push notifications                           |
+| Email service            | Family and healthcare alerts                 |
+| Celery Beat              | Scheduled medication and hydration reminders |
 
-* **Redis** — Used for temporary application data and caching.
-* Can store short-lived state, counters, and session-related information.
-* Important persistent information such as the last time a reminiscence photo was shown should remain stored in MongoDB.
+## **7. Deployment and DevOps**
 
-## Scheduling
+| Technology     | Usage                             |
+| -------------- | --------------------------------- |
+| Docker         | Containerization                  |
+| AWS EC2        | Backend deployment                |
+| AWS RDS        | Managed PostgreSQL                |
+| AWS S3         | Media storage                     |
+| Nginx          | Reverse proxy                     |
+| Git / GitHub   | Version control and collaboration |
+| GitHub Actions | CI/CD automation                  |
 
-* **Cron Jobs** — Used for scheduled backend tasks such as:
+## **8. Overall Architecture**
 
-  * Medication reminders
-  * Hydration reminders
-  * Periodic reminder checks
+**React + TypeScript + Tailwind**
 
-## Notifications
+Patient · Family · Healthcare
 
-* **MongoDB + REST APIs** — Notifications will be stored in MongoDB.
-* Patient, Family, and Healthcare dashboards will fetch notifications through REST APIs.
-* Real-time WebSocket notifications are not part of the MVP.
+**FastAPI Backend**
 
-## Image Uploads
+Authentication · APIs · Business Logic
 
-* **Multer** — Handles image uploads for the AI Reminiscence Companion.
-* Images will initially be stored on the server's local disk for the MVP.
-* Image metadata and context will be stored in MongoDB.
+**Agentic AI**
 
-## Application Management
+LangGraph + LangChain + LLM
 
-* **Docker** — Used to containerize and manage the application and its services.
+**ML Engine**
 
-## MVP Stack Summary
+Scikit-learn + Decision Tree
 
-```text
-Frontend        : React + Tailwind CSS + shadcn/ui
-Backend         : Node.js + Express.js
-Database        : MongoDB Atlas
-Authentication  : JWT + bcrypt
-RAG             : MiniLM + MongoDB Atlas Vector Search
-Voice           : Sarvam AI
-Caching         : Redis
-Scheduling      : Cron
-Notifications   : MongoDB + REST
-Image Uploads   : Multer
-Containerization: Docker
-```
+PostgreSQL
+
+Redis
+
+ChromaDB
+
+## **9. Recommended MVP Stack**
+
+To avoid unnecessary complexity, I'd actually start with:
+
+| Layer           | Selected technology           |
+| --------------- | ----------------------------- |
+| Frontend        | React + TypeScript + Tailwind |
+| Backend         | Python + FastAPI              |
+| Agentic AI      | LangChain + LangGraph         |
+| LLM             | Gemini or Groq                |
+| ML              | Scikit-learn Decision Tree    |
+| Database        | PostgreSQL                    |
+| Vector Database | ChromaDB                      |
+| Cache / Queue   | Redis                         |
+| Speech          | Sarvam AI                     |
+| Storage         | AWS S3                        |
+| Deployment      | Docker + AWS EC2              |
+
+**My advice:** Start with PostgreSQL, Redis and ChromaDB rather than introducing MongoDB as well. Keep the architecture modular, with separate AI and ML services logically separated from your main backend. You can add the remaining infrastructure as the MVP grows.
